@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "PixelClock Desktop",
+  "version": "1.0.0",
+  "description": "Your PixelClock's pixel-art scene as the new tab: seasons, holidays and the time of day, with your links and a small terminal.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "permissions": [
+    "storage",
+    "search"
+  ],
+  "optional_permissions": [
+    "topSites"
+  ],
+  "host_permissions": [
+    "http://pixelclock.local/*"
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5jBFp8fg477/cjL3R/qYW4iV2wrEExAafMeMGl6AQHRd7jvZ7ndUojGD5IAzYXMLrWekYm5IRjgFtVhtGHxbVNyBo5jligDdSqajSliXl4c0k6xxRYGbT0Dt7uTBUb5uMPKX11R1qEm9782u0+xHwZMGqy/3HCyv3K7q2D+JPL+kRrbbGXhq++yRf9Co9LGt0V2fX9j5r6uc44cQO430H5upIiPrLjzLEEWLf3SWrjZJyECw4qsLLy9KPeFtjuP2ICwB1LC0KyYz8K+IzE2vtyI8OjzkqNaLC4K1cB85JHbUkmMjzlr5TcYaliOkSa3NNaz6U68BB37i/ibx6LyOQIDAQAB"
+}

@@ -1,0 +1,13 @@
+{
+  "city": "Berlin",
+  "units": "C",
+  "clock": "24h",
+  "sunTimes": true,
+  "weather": true,
+  "shortcuts": [
+    { "label": "wikipedia", "url": "https://www.wikipedia.org" },
+    { "label": "maps", "url": "https://www.openstreetmap.org" },
+    { "label": "open-meteo", "url": "https://open-meteo.com" }
+  ],
+  "taskbarPx": 56
+}

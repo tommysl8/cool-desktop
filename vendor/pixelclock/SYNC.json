@@ -1,0 +1,92 @@
+{
+  "source": "../PixelClock",
+  "commit": "faff40aab19eb638cb8f883ba0cce4e8e22a96b3",
+  "files": [
+    {
+      "path": "simulator/engine.js",
+      "bytes": 15342,
+      "sha256": "28ef721c23bfe6f8c64b524c8b993b6711687d85a47c256abf78d7d932362fe4"
+    },
+    {
+      "path": "simulator/schedule.js",
+      "bytes": 3296,
+      "sha256": "d7175f5862d1b13aed46659f9c765f31ce7db2a8fde48b0e97def6fbfb117799"
+    },
+    {
+      "path": "simulator/screens.js",
+      "bytes": 5784,
+      "sha256": "36ec8fc7da6e6943b996f05d2bc5ae5c4f306a2aaca99902147975abc93c99db"
+    },
+    {
+      "path": "simulator/themes/autumn.js",
+      "bytes": 13491,
+      "sha256": "dfde087924c02e2eac9da30a4874623dfe8bf8e3b616ac4882ba4e10e663ef64"
+    },
+    {
+      "path": "simulator/themes/christmas.js",
+      "bytes": 13971,
+      "sha256": "e7e1ddf6574bd7905f73976a81f9a2e9d91760ee282fe32fffa21c7c734ea82b"
+    },
+    {
+      "path": "simulator/themes/easter.js",
+      "bytes": 10091,
+      "sha256": "73a0505ce68eec9303fc605bbf15933b8f25cec8a5ebf947ba55262ee88be82d"
+    },
+    {
+      "path": "simulator/themes/halloween.js",
+      "bytes": 18364,
+      "sha256": "e7cd3243dfa06171ced267a2f11da901a843d0ac6902aab30f1cb96e1adfcc8b"
+    },
+    {
+      "path": "simulator/themes/july4.js",
+      "bytes": 12093,
+      "sha256": "7ba22013f61b6049fbb9cdce33a99fc0a6ffcf521b31e858499e75e214f28a72"
+    },
+    {
+      "path": "simulator/themes/lunarnewyear.js",
+      "bytes": 14017,
+      "sha256": "029ad3404955a8a3bad1bb440b9c9fe01382824beb6ae1b64cf71b52f58fc535"
+    },
+    {
+      "path": "simulator/themes/newyear.js",
+      "bytes": 12334,
+      "sha256": "518da92144bd6998f797924544b5059b80995eaa2cda1409bcec8423c3b734fa"
+    },
+    {
+      "path": "simulator/themes/spring.js",
+      "bytes": 11759,
+      "sha256": "8f286dab5c007bf7980a639379d42839184cd293b6a1315108626c06efb1c8e0"
+    },
+    {
+      "path": "simulator/themes/stpatricks.js",
+      "bytes": 8163,
+      "sha256": "042ae3273165bcfd0a28756cafae8eba53de26bc12d5545911c525f538f50674"
+    },
+    {
+      "path": "simulator/themes/summer.js",
+      "bytes": 13687,
+      "sha256": "6ed2a4b1f7ee0f1d6b25d5e1a2a75fd2a2c121803db28e81ac8c60a30bcd8ce1"
+    },
+    {
+      "path": "simulator/themes/thanksgiving.js",
+      "bytes": 14829,
+      "sha256": "5cb3e04eb6929af6a8139dd8758c83dfb7cc1883b3d1438635c26b9447877fc3"
+    },
+    {
+      "path": "simulator/themes/valentines.js",
+      "bytes": 9807,
+      "sha256": "7470b99a347e3e3e1349c582af903a915db12ad062d4c83dd209d424cae64c82"
+    },
+    {
+      "path": "simulator/themes/winter.js",
+      "bytes": 14042,
+      "sha256": "ccf7073cfba2b4d592f9f9c460fad4b9767dfe9b925b0757a9f14784feb53764"
+    },
+    {
+      "path": "tools/render.js",
+      "bytes": 8363,
+      "sha256": "e79803583120d4d6fc86e6ad467fa61bdef64dd9e166d0c11ee7a3df74eb1135"
+    }
+  ],
+  "syncedAt": "2026-11-15T22:33:48.601Z"
+}

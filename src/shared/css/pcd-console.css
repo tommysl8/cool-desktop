@@ -1,0 +1,164 @@
+/* PixelClock Desktop shared: the console column's styles.
+   Linked after tokens.css and pcd-base.css (the colour variables, .pcd-g grid text with var(--cell-h) and
+   var(--cell-ls), the .t-<role> run classes). js/pcd-console.js builds the DOM and places every element on whole
+   device pixels; it sets font-size and --cell-w, --cell-h, --cell-ls on the console and --clock for the big clock.
+
+   Layers, back to front: the scene layer (.pcd-world: the 64x64 scene and its edge bands, CSS-scaled, pixelated), the
+   veil (.pcd-veil: one static gradient, never animated), the column (.pcd-col) and the bottom row.
+   Never here: blur, backdrop-filter, glow, box-shadow, text-shadow, transitions, infinite animations, CSS boxes. */
+
+.pcd-console {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+/* ------------------------------------------------------------------ the scene layer's holder
+   PCD.bleed.mountScene places and styles its own canvases (64x64 scene, 1x64 band, up to 5x64 seam) and the veil
+   (.pcd-bleed-veil, the one static gradient) inside this holder, under the column. */
+
+.pcd-console .pcd-world {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ the column */
+
+.pcd-console .pcd-col {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.pcd-console .pcd-g { z-index: 2; color: var(--text); }
+.pcd-console .pcd-px {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+.pcd-console .pcd-colon {
+  position: absolute;
+  z-index: 3;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+/* The scene shows at once; the text waits for the font (or its 250 ms timeout, then Consolas). */
+.pcd-console:not(.pcd-ready) .pcd-col,
+.pcd-console:not(.pcd-ready) .pcd-caption,
+.pcd-console:not(.pcd-ready) .pcd-settings { visibility: hidden; }
+
+/* The settings sheet covers the column: the column hides while it is open (the bottom row and the scene stay). */
+.pcd-console.pcd-sheet-open .pcd-col { visibility: hidden; }
+
+/* Links, the credit and the settings button take the pointer; the rest of the column lets clicks reach the scene. */
+.pcd-console a,
+.pcd-console .pcd-settings,
+.pcd-console .pcd-term { pointer-events: auto; }
+.pcd-console a { cursor: pointer; }
+.pcd-console .pcd-link .t-muted,
+.pcd-console .pcd-settings .t-muted { color: var(--muted); }
+.pcd-console .pcd-link:hover .t-muted,
+.pcd-console .pcd-link:focus-visible .t-muted,
+.pcd-console .pcd-settings:hover .t-muted,
+.pcd-console .pcd-settings:focus-visible .t-muted,
+.pcd-console a.t-faint:hover,
+.pcd-console a.t-faint:focus-visible { color: var(--text); }
+
+/* '≡ settings': a real button that looks like the grid text it sits on. */
+.pcd-console .pcd-settings {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: var(--cell-ls, 0);
+  line-height: var(--cell-h, normal);
+  white-space: pre;
+  cursor: pointer;
+}
+
+/* The ringing pulse: the status line's glyph and words between accent and ring at 2 Hz (driven by ring()). */
+.pcd-console.pcd-ring-on .pcd-status .t-accent { color: var(--ring); }
+
+/* The clock's time as text for screen readers. */
+.pcd-console .pcd-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ the terminal slot (new tab)
+   pcd-console.js places and sizes .pcd-term on the grid (data-cols, data-rows); the terminal renders inside it. These
+   classes give its lines their look: output muted, the command echo '› ' frame + text, errors '! ' ring, two-cell
+   indents, hanging tables, art lines that never wrap, the prompt with an accent '›', a faint ghost and an accent block
+   caret that blinks only while focused. */
+
+.pcd-console .pcd-term {
+  position: absolute;
+  z-index: 2;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  font: inherit;
+  line-height: var(--cell-h);
+  letter-spacing: var(--cell-ls);
+  color: var(--muted);
+}
+.pcd-console .pcd-term::-webkit-scrollbar { display: none; }
+/* once lines scroll away under the rule, the top row fades instead of being cut (a mask, not a blur) */
+.pcd-console .pcd-term.pcd-term-scrolled {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 calc(var(--cell-h) * 1.25));
+  mask-image: linear-gradient(to bottom, transparent 0, #000 calc(var(--cell-h) * 1.25));
+}
+.pcd-console .pcd-term-ln {
+  min-height: var(--cell-h);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+}
+.pcd-console .pcd-term-o { padding-left: calc(var(--cell-w) * 2); }
+.pcd-console .pcd-term-hang { padding-left: calc(var(--cell-w) * 12); text-indent: calc(var(--cell-w) * -10); }
+.pcd-console .pcd-term-art { white-space: pre; overflow: hidden; }
+.pcd-console .pcd-term-prompt { position: relative; height: var(--cell-h); }
+.pcd-console .pcd-term-prompt .pcd-term-pp { position: absolute; left: 0; top: 0; color: var(--accent); }
+.pcd-console .pcd-term-input {
+  all: unset;
+  position: absolute;
+  top: 0;
+  left: calc(var(--cell-w) * 2);
+  height: var(--cell-h);
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: var(--cell-h);
+  color: var(--text);
+  caret-color: transparent;
+  white-space: pre;
+}
+.pcd-console .pcd-term-input:focus,
+.pcd-console .pcd-term-input:focus-visible { outline: none; }
+.pcd-console .pcd-term-ghost { position: absolute; top: 0; color: var(--faint); white-space: pre; pointer-events: none; }
+/* the caret's lit state inherits (never 'visible'): a column hidden before the font or under the settings sheet hides
+   it too */
+.pcd-console .pcd-term-caret { position: absolute; top: 0; color: var(--accent); pointer-events: none; visibility: hidden; }
+.pcd-console .pcd-term-prompt.pcd-focus .pcd-term-caret { visibility: inherit; }
+.pcd-console .pcd-term-prompt.pcd-focus.pcd-blink-off .pcd-term-caret { visibility: hidden; }
+.pcd-console .pcd-term ::selection,
+.pcd-console .pcd-term-input::selection { background: var(--wood); color: var(--text); }

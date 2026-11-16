@@ -1,0 +1,16 @@
+/* Engine smoke page: the 64x64 scene scaled by a whole number of device pixels, letterboxed over the match colour. */
+:root { color-scheme: dark; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #141016; }
+#scene {
+  position: absolute;
+  display: block;
+  image-rendering: pixelated;
+}
+#caption {
+  position: absolute;
+  margin: 0;
+  font: 14px/1 Consolas, 'Cascadia Mono', monospace;
+  font-variant-ligatures: none;
+  color: #a99d91;
+  white-space: pre;
+}

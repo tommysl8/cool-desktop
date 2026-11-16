@@ -1,0 +1,45 @@
+/* PixelClock Desktop wallpaper: the page's own styles, loaded after the shared tokens.css, pcd-base.css and
+ * pcd-console.css (the scene layer and the column are styled there): no margins or scrollbars, the [hidden] rule
+ * and the debug overlay (#debug). No prefers-color-scheme (in Lively it follows Lively's own theme), no transitions,
+ * no animations.
+ */
+:root {
+  --wp-panel: #1d181f;
+  --wp-line: #3a3138;
+  --wp-text: #ece4d8;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  cursor: default;
+  user-select: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* The debug overlay (Customise "Debug overlay" or ?debug=1): at the top, centred over the scene side (the app sets
+   left to the middle of the room beside the column), clear of the column and of the icons' usual top-left corner. */
+.wp-debug {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 6px 8px;
+  background: var(--wp-panel);
+  color: var(--wp-text);
+  border: 1px solid var(--wp-line);
+  font: 12px/1.35 Consolas, 'Cascadia Mono', monospace;
+  white-space: pre;
+  pointer-events: none;
+}

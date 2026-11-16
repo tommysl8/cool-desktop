@@ -1,0 +1,142 @@
+/* PixelClock Desktop shared base styles. Linked after the generated tokens.css (design/tokens.json: --bg --text ...
+   --clock --mono) and before each piece's own sheet.
+   TermMono is added by pcd-font.js (FontFace); there is no @font-face here.
+
+   What this file gives every piece:
+   - the page: bg, text, the one monospace stack, weight 400, ligatures, kerning and font synthesis off;
+   - .pcd-g      grid text: absolutely placed, white-space pre, line-height var(--cell-h) and letter-spacing
+                 var(--cell-ls), the cell that PCD.font.apply() sets (floored to device pixels);
+   - .pcd-art    free-standing text art: line-height normal (anything taller leaves gaps in box lines);
+   - .t-<role>   the token roles of text runs (PCD.core.roleClass): t-text t-muted t-faint t-accent t-frame t-ring
+                 t-wood t-line t-clock (colours), t-bold (600), t-field (a field well);
+   - .pcd-pixels a canvas scaled by whole device pixels without smoothing (the scene, the clock, the strip);
+   - .pcd-plain  opt-in reset that makes a form control look like plain text on the grid;
+   - links without underline (text on hover and focus), a 1 px accent focus ring 2 px out, a wood text selection;
+   - motion: no CSS transitions anywhere; html.pcd-reduced (PCD.core.applyMotion) stops every CSS animation.
+   Never here: gradients, glow, blur, backdrop-filter, box-shadow, text-shadow, rounded CSS boxes, infinite animations. */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--mono);
+  font-weight: var(--weight, 400);
+  font-style: normal;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'clig' 0, 'calt' 0;
+  font-kerning: none;
+  font-synthesis: none;
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------------ the character grid */
+
+.pcd-g {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  white-space: pre;
+  font: inherit;
+  font-variant-ligatures: none;
+  font-kerning: none;
+  line-height: var(--cell-h, normal);
+  letter-spacing: var(--cell-ls, 0);
+}
+
+.pcd-art {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  font-family: var(--mono);
+  font-variant-ligatures: none;
+  font-kerning: none;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+.pcd-pixels {
+  image-rendering: pixelated;
+}
+
+/* ------------------------------------------------------------------ roles (one colour each; amber only for what is alive) */
+
+.t-text { color: var(--text); }
+.t-muted { color: var(--muted); }
+.t-faint { color: var(--faint); }
+.t-accent { color: var(--accent); }
+.t-frame { color: var(--frame); }
+.t-ring { color: var(--ring); }
+.t-wood { color: var(--wood); }
+.t-line { color: var(--line); }
+.t-clock { color: var(--clock); }
+.t-bold { font-weight: var(--weight-bold, 600); }
+.t-field { background: var(--field); color: var(--text); }
+
+/* ------------------------------------------------------------------ links, form controls, focus, selection */
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--text);
+}
+
+.pcd-plain {
+  all: unset;
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: pre;
+  cursor: default;
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible,
+.pcd-plain:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--wood);
+  color: var(--text);
+}
+
+/* ------------------------------------------------------------------ motion */
+
+*,
+*::before,
+*::after {
+  transition: none !important;
+}
+
+html.pcd-reduced *,
+html.pcd-reduced *::before,
+html.pcd-reduced *::after {
+  animation: none !important;
+}

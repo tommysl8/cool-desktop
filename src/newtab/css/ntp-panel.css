@@ -1,0 +1,417 @@
+/* PixelClock Desktop, new tab: the settings sheet (js/ntp-panel.js).
+ * The sheet sits on the character grid: js/ntp-panel.js sizes it in whole cells (--pcd-cw x --pcd-ch, the page's one
+ * text size with its letter-spacing correction), draws its box lines as text in .pcd-panel__frame and places the
+ * title, "esc" and the storage line on the border rows. Everything here is in cells, so every glyph lands on the grid.
+ * Rules kept: no CSS box lines or rounded boxes, no veil (the scene stays visible, a theme change shows live), no
+ * pointer cursor, no transitions or animations, one font size, accent only on the row cursor (the live focus). */
+
+.pcd-panel {
+  --pcd-cw: 1ch;
+  --pcd-ch: 1.25em;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text, #ece4d8);
+  font-family: inherit;
+  font-weight: 400;
+  font-variant-ligatures: none;
+  font-kerning: none;
+  white-space: normal;
+}
+
+/* The panel fill ends at the box lines: they are glyphs drawn through the middle of the border cells, so the fill is
+ * inset half a cell on every side (the frame, head and box come later in the tree and paint above it). */
+.pcd-panel::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--pcd-ch) / 2) calc(var(--pcd-cw) / 2);
+  background: var(--panel, #1d181f);
+  pointer-events: none;
+}
+
+/* No veil: the scene stays visible, so a theme change shows live. */
+.pcd-panel::backdrop {
+  background: transparent;
+}
+
+/* The box lines: text in frame colour, exactly the sheet's cells. */
+.pcd-panel__frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: pre;
+  color: var(--frame, #9a6a40);
+  pointer-events: none;
+}
+
+/* The words on the borders: a blank cell on each side is part of the frame's text. */
+.pcd-panel__head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+
+.pcd-panel__title,
+.pcd-panel__close,
+.pcd-panel__sync {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: pre;
+}
+
+.pcd-panel__title {
+  color: var(--text, #ece4d8);
+  font-weight: 600;
+}
+
+.pcd-panel__close,
+.pcd-panel__sync {
+  color: var(--faint, #978d83);
+}
+
+.pcd-panel__close:hover,
+.pcd-panel__close:focus-visible {
+  color: var(--text, #ece4d8);
+}
+
+.pcd-panel[data-sync="error"] .pcd-panel__sync {
+  color: var(--text, #ece4d8);
+}
+
+/* Inside the box: the rows (they scroll when the sheet is short), then [ done ] on the last line inside. */
+.pcd-panel__box {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.pcd-panel__rows {
+  display: grid;
+  align-content: start;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.pcd-panel__rows::-webkit-scrollbar {
+  display: none;
+}
+
+.pcd-panel__foot {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  height: var(--pcd-ch);
+  padding-right: var(--pcd-cw);
+}
+
+/* One row: "› " or two blanks, the label padded to 13 cells (15 in all), then the control. */
+.pcd-panel__row {
+  display: grid;
+  grid-template-columns: calc(var(--pcd-cw) * 15) minmax(0, 1fr);
+  align-items: baseline;
+}
+
+/* A short sheet (no blank line between every row) keeps one before each group of settings. */
+.pcd-panel__row[data-group] {
+  margin-top: var(--pcd-ch);
+}
+
+.pcd-panel__row[hidden],
+.pcd-panel__note[hidden],
+.pcd-panel__item-note[hidden],
+.pcd-panel__editor[hidden],
+.pcd-panel__title[hidden],
+.pcd-panel__close[hidden],
+.pcd-panel__sync[hidden] {
+  display: none;
+}
+
+.pcd-panel__label {
+  color: var(--muted, #a99d91);
+  white-space: pre;
+}
+
+.pcd-panel__label::before {
+  content: "  ";
+}
+
+.pcd-panel__row:focus-within > .pcd-panel__label {
+  color: var(--text, #ece4d8);
+}
+
+/* The row cursor: "› " in accent on the focused row, the sheet's one accent. */
+.pcd-panel__row:focus-within > .pcd-panel__label::before {
+  content: "› ";
+  color: var(--accent, #ff9a3c);
+}
+
+.pcd-panel__row[data-sub] > .pcd-panel__label {
+  visibility: hidden;
+}
+
+.pcd-panel__control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: calc(var(--pcd-cw) * 4);
+  min-width: 0;
+}
+
+/* Radios: every option but the last padded to the row's longest option + 2 cells. */
+.pcd-panel__control[role="radiogroup"] {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  justify-self: start;
+  width: max-content;
+  max-width: 100%;
+  column-gap: calc(var(--pcd-cw) * 2);
+}
+
+/* Radios (•) / ( ) and checkboxes [x] / [ ]: the native input stays focusable but invisible. */
+.pcd-panel__choice {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  column-gap: var(--pcd-cw);
+  white-space: pre;
+}
+
+.pcd-panel__choice > .pcd-panel__input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pcd-panel__bracket {
+  color: var(--faint, #978d83);
+}
+
+/* The radio dot and the checkbox x are text, the brackets faint: a state, not the live focus. */
+.pcd-panel__dot {
+  color: var(--text, #ece4d8);
+}
+
+.pcd-panel__input:not(:checked) + .pcd-panel__mark .pcd-panel__dot {
+  visibility: hidden;
+}
+
+.pcd-panel__text {
+  color: var(--muted, #a99d91);
+}
+
+.pcd-panel__input:checked ~ .pcd-panel__text {
+  color: var(--text, #ece4d8);
+}
+
+.pcd-panel__choice[data-disabled] .pcd-panel__text,
+.pcd-panel__choice[data-disabled] .pcd-panel__dot {
+  color: var(--faint, #978d83);
+}
+
+/* A focused choice underlines its words (the row cursor marks the row); no ring that the scroll box could clip. */
+.pcd-panel__choice:has(> .pcd-panel__input:focus-visible) {
+  outline: none;
+}
+
+.pcd-panel__choice:has(> .pcd-panel__input:focus-visible) .pcd-panel__text {
+  color: var(--text, #ece4d8);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Field wells: a field background with text; placeholders muted, never faint. */
+.pcd-panel__well {
+  display: inline-flex;
+  align-items: baseline;
+  min-width: 0;
+  background: var(--field, #2a2229);
+}
+
+.pcd-panel__input,
+.pcd-panel button,
+.pcd-panel select {
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+.pcd-panel__field,
+.pcd-panel__select,
+.pcd-panel__item-label,
+.pcd-panel__item-url {
+  box-sizing: border-box;
+  min-width: 0;
+  height: var(--pcd-ch);
+  margin: 0;
+  padding: 0 var(--pcd-cw);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text, #ece4d8);
+  outline-offset: 2px;
+}
+
+/* The city and theme wells are 28 cells. */
+.pcd-panel__row > .pcd-panel__control > .pcd-panel__well {
+  width: calc(var(--pcd-cw) * 28);
+  max-width: 100%;
+}
+
+.pcd-panel__field,
+.pcd-panel__select {
+  width: 100%;
+}
+
+.pcd-panel__field::placeholder,
+.pcd-panel__item-label::placeholder,
+.pcd-panel__item-url::placeholder {
+  color: var(--muted, #a99d91);
+  opacity: 1;
+}
+
+.pcd-panel__select {
+  appearance: none;
+  padding-right: calc(var(--pcd-cw) * 3);
+}
+
+.pcd-panel__select option {
+  background: var(--field, #2a2229);
+  color: var(--text, #ece4d8);
+}
+
+.pcd-panel__well--select::after {
+  content: "↓";
+  margin-left: calc(var(--pcd-cw) * -2);
+  width: calc(var(--pcd-cw) * 2);
+  color: var(--muted, #a99d91);
+  pointer-events: none;
+}
+
+.pcd-panel__note,
+.pcd-panel__item-note {
+  grid-column: 2;
+  margin: 0;
+  color: var(--muted, #a99d91);
+}
+
+.pcd-panel__note[data-level="error"],
+.pcd-panel__item-note {
+  color: var(--text, #ece4d8);
+}
+
+/* A hint under a link that is still saved (its name is also a terminal command). */
+.pcd-panel__item-note[data-level="info"] {
+  color: var(--muted, #a99d91);
+}
+
+/* The link editor (opened by "[ edit the 5 links ]"). */
+.pcd-panel__editor {
+  display: grid;
+  flex-basis: 100%;
+}
+
+.pcd-panel__list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* One link on two lines, so the address gets the whole width of the sheet:
+ *   [1] name_________________ ↑ ↓ x
+ *       the address____________________
+ *       (a note when the address is wrong) */
+.pcd-panel__item {
+  display: grid;
+  grid-template-columns: calc(var(--pcd-cw) * 3) minmax(0, 1fr) var(--pcd-cw) var(--pcd-cw) var(--pcd-cw);
+  grid-template-areas:
+    "num label up down remove"
+    ". url url url url"
+    ". note note note note";
+  column-gap: var(--pcd-cw);
+  align-items: baseline;
+}
+
+.pcd-panel__item > .pcd-panel__num { grid-area: num; }
+.pcd-panel__item > .pcd-panel__well--label { grid-area: label; }
+.pcd-panel__item > .pcd-panel__well--url { grid-area: url; }
+.pcd-panel__item > [data-action="up"] { grid-area: up; }
+.pcd-panel__item > [data-action="down"] { grid-area: down; }
+.pcd-panel__item > [data-action="remove"] { grid-area: remove; }
+.pcd-panel__item > .pcd-panel__item-note { grid-area: note; }
+
+.pcd-panel__item .pcd-panel__well > input {
+  width: 100%;
+}
+
+.pcd-panel__num {
+  color: var(--faint, #978d83);
+}
+
+/* Buttons are text: muted, text on hover or focus; the word of [ done ] in text. */
+.pcd-panel__icon,
+.pcd-panel__add,
+.pcd-panel__action,
+.pcd-panel__done {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted, #a99d91);
+  white-space: pre;
+}
+
+.pcd-panel__add {
+  justify-self: start;
+}
+
+.pcd-panel__icon:hover,
+.pcd-panel__add:hover,
+.pcd-panel__action:hover,
+.pcd-panel__icon:focus-visible,
+.pcd-panel__add:focus-visible,
+.pcd-panel__action:focus-visible {
+  color: var(--text, #ece4d8);
+}
+
+.pcd-panel__done .pcd-panel__word {
+  color: var(--text, #ece4d8);
+}
+
+.pcd-panel button:disabled {
+  color: var(--line, #3a3138);
+}
+
+/* The ring of a focused well or button stays inside its box, so the rows' scroll box never clips it. */
+.pcd-panel :focus-visible {
+  outline: 1px solid var(--accent, #ff9a3c);
+  outline-offset: -1px;
+}

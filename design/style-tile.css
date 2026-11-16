@@ -1,0 +1,43 @@
+/* PixelClock Desktop style tile: the page's own layout (design/style-tile.js places everything on the character grid;
+   the colours, the grid text and the roles come from tokens.css, pcd-base.css and pcd-console.css). */
+
+.tile {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* One board section: a block of whole cells; its text, swatches and canvases are placed inside on the grid. */
+.tile-sec {
+  position: relative;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+}
+
+.tile-sec .pcd-g { z-index: 1; }
+
+.tile-sw {
+  position: absolute;
+  z-index: 0;
+}
+
+.tile-px {
+  position: absolute;
+  z-index: 2;
+  image-rendering: pixelated;
+}
+
+/* A mini screen: a fixed device-pixel screen the console lays itself out in. */
+.tile-screen {
+  position: absolute;
+  overflow: hidden;
+}
+
+/* The full-size console view: the console is the page. */
+.tile-full {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

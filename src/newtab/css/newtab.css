@@ -1,0 +1,19 @@
+/* PixelClock Desktop new tab: the page's own styles. Everything visible is the console (src/shared/css/
+   pcd-console.css: the scene layer, the column, the terminal slot's classes), the terminal (css/ntp-term.css) and the
+   settings sheet (css/ntp-panel.css); this file only holds the page.
+   First paint: bg (the inline style of newtab.html, then the token) until the console's scene covers the tab. */
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+html {
+  background: var(--bg, #141016);
+}
+
+body {
+  background: transparent;
+}

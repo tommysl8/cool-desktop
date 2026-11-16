@@ -1,0 +1,196 @@
+{
+  "v": 1,
+  "about": "The still's glyph atlas (tools/make-atlas.mjs; read by src/still/lib/atlas.mjs). One grey PNG per type size in device px: every glyph the still draws, white on black, rendered by headless Chrome in TermMono at device scale 1. Slot (col, row) holds chars[weight][i] with col = i % cols and row = rows[weight] + floor(i / cols); the glyph's cell starts padX, padY pixels into its slot.",
+  "font": {
+    "family": "TermMono",
+    "file": "CascadiaMono-wght.ttf",
+    "sha256": "78864a1b4d03767a44731454a6f24c6b7d6e93fb5f62932860eb02e409cd50cb"
+  },
+  "browser": "Chrome/157.0.8103.51",
+  "chars": {
+    "400": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~╭╮╰╯─│├┤░▌›»·∙⌂☼≡↓•°",
+    "600": " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~·°"
+  },
+  "sizes": {
+    "16": {
+      "advance": 9.375,
+      "cellW": 9,
+      "cellH": 19,
+      "baseline": 15,
+      "padX": 4,
+      "padY": 4,
+      "slotW": 17,
+      "slotH": 27,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-16.png",
+      "width": 272,
+      "height": 405
+    },
+    "20": {
+      "advance": 11.7188,
+      "cellW": 11,
+      "cellH": 24,
+      "baseline": 19,
+      "padX": 4,
+      "padY": 4,
+      "slotW": 19,
+      "slotH": 32,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-20.png",
+      "width": 304,
+      "height": 480
+    },
+    "24": {
+      "advance": 14.0625,
+      "cellW": 14,
+      "cellH": 28,
+      "baseline": 22,
+      "padX": 5,
+      "padY": 5,
+      "slotW": 24,
+      "slotH": 38,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-24.png",
+      "width": 384,
+      "height": 570
+    },
+    "28": {
+      "advance": 16.4063,
+      "cellW": 16,
+      "cellH": 33,
+      "baseline": 26,
+      "padX": 6,
+      "padY": 6,
+      "slotW": 28,
+      "slotH": 45,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-28.png",
+      "width": 448,
+      "height": 675
+    },
+    "32": {
+      "advance": 18.75,
+      "cellW": 18,
+      "cellH": 38,
+      "baseline": 30,
+      "padX": 6,
+      "padY": 6,
+      "slotW": 30,
+      "slotH": 50,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-32.png",
+      "width": 480,
+      "height": 750
+    },
+    "36": {
+      "advance": 21.0938,
+      "cellW": 21,
+      "cellH": 41,
+      "baseline": 33,
+      "padX": 7,
+      "padY": 7,
+      "slotW": 35,
+      "slotH": 55,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-36.png",
+      "width": 560,
+      "height": 825
+    },
+    "40": {
+      "advance": 23.4375,
+      "cellW": 23,
+      "cellH": 46,
+      "baseline": 37,
+      "padX": 7,
+      "padY": 7,
+      "slotW": 37,
+      "slotH": 60,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-40.png",
+      "width": 592,
+      "height": 900
+    },
+    "48": {
+      "advance": 28.125,
+      "cellW": 28,
+      "cellH": 56,
+      "baseline": 45,
+      "padX": 9,
+      "padY": 9,
+      "slotW": 46,
+      "slotH": 74,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-48.png",
+      "width": 736,
+      "height": 1110
+    },
+    "56": {
+      "advance": 32.8125,
+      "cellW": 32,
+      "cellH": 65,
+      "baseline": 52,
+      "padX": 10,
+      "padY": 10,
+      "slotW": 52,
+      "slotH": 85,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-56.png",
+      "width": 832,
+      "height": 1275
+    },
+    "64": {
+      "advance": 37.5,
+      "cellW": 37,
+      "cellH": 74,
+      "baseline": 59,
+      "padX": 11,
+      "padY": 11,
+      "slotW": 59,
+      "slotH": 96,
+      "cols": 16,
+      "rows": {
+        "400": 0,
+        "600": 8
+      },
+      "png": "atlas-64.png",
+      "width": 944,
+      "height": 1440
+    }
+  }
+}

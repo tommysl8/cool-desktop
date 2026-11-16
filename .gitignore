@@ -1,0 +1,9 @@
+dist/
+node_modules/
+# screenshots from the browser checks (wip/shots/) and other scratch files
+wip/
+*.log
+config/user.json
+*.zip
+desktop.ini
+Thumbs.db

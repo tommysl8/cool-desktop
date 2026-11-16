@@ -1,0 +1,90 @@
+/* PixelClock Desktop, new tab: the terminal (src/newtab/js/term/term-ui.js).
+   The look lives in src/shared/css/pcd-console.css (the slot section.pcd-term and the pcd-term-* classes; the console
+   draws the '── terminal ───' rule). This sheet adds only:
+   - extras the console leaves open: the prompt's glyphs never join a text selection, the input shows a text cursor,
+     a wheel at the end of the scrollback does not scroll anything else, and the caret over a ghost is an inverse block
+     (the ghost's first character in the page colour on accent, so the completion stays readable);
+   - .pcd-term-solo: the same look for a terminal mounted outside .pcd-console (term-ui.js adds the class), so the
+     terminal also stands on its own (tests, previews). Keep it in step with pcd-console.css.
+   Static: no transitions, no animations, no blur; the caret blinks by a class term-ui.js toggles every 530 ms only
+   while the prompt has the focus. */
+
+.pcd-term {
+  overscroll-behavior: contain;
+}
+
+.pcd-term-pp,
+.pcd-term-ghost,
+.pcd-term-caret {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* as specific as the console's .pcd-console .pcd-term-input (whose all: unset resets the cursor); this sheet comes
+   after it */
+.pcd-term .pcd-term-input {
+  cursor: text;
+}
+
+/* the caret over a ghost: term-ui.js sets the ghost's first character and this class; the cell turns accent with the
+   character in the page colour (an inverse block cursor). It blinks like the plain caret: while it is off, the
+   ghost's own faint character shows. A link preview starts with a space: pre keeps that cell, a solid block. */
+.pcd-console .pcd-term-caret.pcd-term-caret-on,
+.pcd-term-solo .pcd-term-caret.pcd-term-caret-on {
+  background: var(--accent);
+  color: var(--bg);
+  white-space: pre;
+}
+
+/* ------------------------------------------------------------------ stand-alone (outside .pcd-console) */
+
+.pcd-term-solo {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
+  font-variant-ligatures: none;
+  font-kerning: none;
+  line-height: var(--cell-h);
+  letter-spacing: var(--cell-ls);
+  color: var(--muted);
+}
+.pcd-term-solo::-webkit-scrollbar { display: none; }
+/* the mask reads only alpha: any opaque token will do (no colour literal) */
+.pcd-term-solo.pcd-term-scrolled {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, var(--bg) calc(var(--cell-h) * 1.25));
+  mask-image: linear-gradient(to bottom, transparent 0, var(--bg) calc(var(--cell-h) * 1.25));
+}
+.pcd-term-solo .pcd-term-ln {
+  min-height: var(--cell-h);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+}
+.pcd-term-solo .pcd-term-o { padding-left: calc(var(--cell-w) * 2); }
+.pcd-term-solo .pcd-term-hang { padding-left: calc(var(--cell-w) * 12); text-indent: calc(var(--cell-w) * -10); }
+.pcd-term-solo .pcd-term-art { white-space: pre; overflow: hidden; }
+.pcd-term-solo .pcd-term-prompt { position: relative; height: var(--cell-h); }
+.pcd-term-solo .pcd-term-pp { position: absolute; left: 0; top: 0; color: var(--accent); }
+.pcd-term-solo .pcd-term-input {
+  all: unset;
+  position: absolute;
+  top: 0;
+  left: calc(var(--cell-w) * 2);
+  height: var(--cell-h);
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: var(--cell-h);
+  color: var(--text);
+  caret-color: transparent;
+  white-space: pre;
+  cursor: text;
+}
+.pcd-term-solo .pcd-term-input:focus,
+.pcd-term-solo .pcd-term-input:focus-visible { outline: none; }
+.pcd-term-solo .pcd-term-ghost { position: absolute; top: 0; color: var(--faint); white-space: pre; pointer-events: none; }
+.pcd-term-solo .pcd-term-caret { position: absolute; top: 0; color: var(--accent); pointer-events: none; visibility: hidden; }
+.pcd-term-solo .pcd-term-prompt.pcd-focus .pcd-term-caret { visibility: visible; }
+.pcd-term-solo .pcd-term-prompt.pcd-focus.pcd-blink-off .pcd-term-caret { visibility: hidden; }
+.pcd-term-solo ::selection,
+.pcd-term-solo .pcd-term-input::selection { background: var(--wood); color: var(--text); }
